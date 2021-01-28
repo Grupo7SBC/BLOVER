@@ -19,6 +19,10 @@ Los materiales que se han utilizado han sido:
   - 1 x Sensor de detección de agua 
   - 6 x Sensor de humedad en tierra YL-69
   - 1 x Resistencia fotosensora
+  
+Software utilizado y recursos:
+  - Arduino IDE
+  - Librerías de ESP32 y ESP8266 para Arduino
 
 Este proyecto está llevado a cabo en la Universidad Politécnica de Madrid para la asignatura
 Sistemas Basados en Computador por: 
