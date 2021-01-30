@@ -23,6 +23,7 @@ Los materiales que se han utilizado han sido:
 Software utilizado y recursos:
   - Arduino IDE
   - Librerías de ESP32 y ESP8266 para Arduino
+  - Bot de telegram
 
 Este proyecto está llevado a cabo en la Universidad Politécnica de Madrid para la asignatura
 Sistemas Basados en Computador por: 
