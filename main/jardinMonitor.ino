@@ -4,11 +4,9 @@
 const char* ssid = "ssid";
 const char* password = "pass";
 
-#define THINGSBOARD_SERVER "iot.etsisi.upm.es"
-#define TOKEN "j62WfFjWDk8gRsnGPVdm"
+#define THINGSBOARD_SERVER "iot.etsisi.upm.es"	//Ingresar en la web iot.etsisi.upm.es:8080 para visualizar datos
+#define TOKEN "j62WfFjWDk8gRsnGPVdm"		//Token de acceso al dispositivo de thingsboard
 
-//#define THINGSBOARD_SERVER "demo.thingsboard.io"
-//#define TOKEN "SBJoNixagNeIe0Mbf1lS"
 
 #include "DHT.h"
 
@@ -16,6 +14,8 @@ const char* password = "pass";
 
 WiFiClient espClient;
 ThingsBoard tb(espClient);
+
+// PINOUT de esp32 wroom32
 
 #define Humedad_Tierra1 33
 #define Humedad_Tierra2 35
@@ -25,58 +25,87 @@ ThingsBoard tb(espClient);
 #define Humedad_Tierra6 38
 #define fotoSensor 32
 #define Agua 36
+#define relay 17
 
 #define DHTPIN 23
 #define DHTTYPE DHT22
 
 DHT dht(DHTPIN, DHTTYPE);
 
+//Lectura de valores
+//Entradas analogica de 0 a 4096, se realiza una normalizacion a porcentaje
+
 void leer_HTierra1() {
    float sensorValue = analogRead(Humedad_Tierra1);
-   sensorValue = sensorValue/40;
+   sensorValue = sensorValue/40.96;				
    Serial.println("Humedad en tierra 1:"); 
    Serial.println(sensorValue);      
-   tb.sendTelemetryFloat("Humedad_tierra_1", sensorValue); 
+   tb.sendTelemetryFloat("Humedad_tierra_1", sensorValue);
+   if(sensorValue < 40) 					//Se envia señal al relay si hay poca humedad
+	digitalWrite(relay, HIGH);
+   if(sensorValue < 80) 
+	digitalWrite(relay, LOW);				//Se envia señal al relay cuando ya no hace falta regar mas
+   
 }
 
 void leer_HTierra2() {
    float sensorValue = analogRead(Humedad_Tierra2);
-   sensorValue = sensorValue/40;
+   sensorValue = sensorValue/40.96;
    Serial.println("Humedad en tierra 2:"); 
    Serial.println(sensorValue);      
-   tb.sendTelemetryFloat("Humedad_tierra_2", sensorValue); 
+   tb.sendTelemetryFloat("Humedad_tierra_2", sensorValue);
+   if(sensorValue < 40) 					
+	digitalWrite(relay, HIGH);
+   if(sensorValue < 80) 
+	digitalWrite(relay, LOW);	 
 }
 
 void leer_HTierra3() {
    float sensorValue = analogRead(Humedad_Tierra3);
-   sensorValue = sensorValue/40;
+   sensorValue = sensorValue/40.96;
    Serial.println("Humedad en tierra 3:"); 
    Serial.println(sensorValue);      
-   tb.sendTelemetryFloat("Humedad_tierra_3", sensorValue); 
+   tb.sendTelemetryFloat("Humedad_tierra_3", sensorValue);
+   if(sensorValue < 40) 					
+	digitalWrite(relay, HIGH);
+   if(sensorValue < 80) 
+	digitalWrite(relay, LOW); 
 }
 
 void leer_HTierra4() {
    float sensorValue = analogRead(Humedad_Tierra4);
-   sensorValue = sensorValue/40;
+   sensorValue = sensorValue/40.96;
    Serial.println("Humedad en tierra 4:"); 
    Serial.println(sensorValue);      
-   tb.sendTelemetryFloat("Humedad_tierra_4", sensorValue); 
+   tb.sendTelemetryFloat("Humedad_tierra_4", sensorValue);
+   if(sensorValue < 40) 					
+	digitalWrite(relay, HIGH);
+   if(sensorValue < 80) 
+	digitalWrite(relay, LOW); 
 }
 
 void leer_HTierra5() {
    float sensorValue = analogRead(Humedad_Tierra5);
-   sensorValue = sensorValue/40;
+   sensorValue = sensorValue/40.96;
    Serial.println("Humedad en tierra 5:"); 
    Serial.println(sensorValue);      
-   tb.sendTelemetryFloat("Humedad_tierra_5", sensorValue); 
+   tb.sendTelemetryFloat("Humedad_tierra_5", sensorValue);
+   if(sensorValue < 40) 					
+	digitalWrite(relay, HIGH);
+   if(sensorValue < 80) 
+	digitalWrite(relay, LOW); 
 }
 
 void leer_HTierra6() {
    float sensorValue = analogRead(Humedad_Tierra6);
-   sensorValue = sensorValue/40;
+   sensorValue = sensorValue/40.96;
    Serial.println("Humedad en tierra 6:"); 
    Serial.println(sensorValue);      
    tb.sendTelemetryFloat("Humedad_tierra_6", sensorValue); 
+   if(sensorValue < 40) 					
+	digitalWrite(relay, HIGH);
+   if(sensorValue < 80) 
+	digitalWrite(relay, LOW);
 }
 
 void leer_HAire() {
@@ -88,7 +117,7 @@ void leer_HAire() {
 
 void leer_Agua() {
    float sensorValue = analogRead(Agua);
-   sensorValue = 100*sensorValue/4095;
+   sensorValue = sensorValue/40.96;
    Serial.println("Nivel del agua:"); 
    Serial.println(sensorValue);      
    tb.sendTelemetryFloat("Nivel_agua", sensorValue); 
@@ -100,6 +129,8 @@ void leer_Temperatura() {
    Serial.println(sensorValue);      
    tb.sendTelemetryFloat("Temperatura", sensorValue); 
 }
+
+//Se lee la intensidad de luz, y se establecen 3 niveles, bajo, medio y alto (0, 1 y 2)
 
 void leer_Luz() {
    float sensorValue = analogRead(fotoSensor);
@@ -126,11 +157,12 @@ void setup()
   pinMode(Humedad_Tierra6, INPUT);
   pinMode(Agua, INPUT);
   pinMode(DHTPIN, INPUT);
+  pinMode(relay, OUTPUT);
 
   dht.begin();
   Serial.begin(115200);  
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) {	//Se conecta al punto de acceso a internet
     delay(1000);
     Serial.println("Connecting to WiFi..");
   }
@@ -138,9 +170,9 @@ void setup()
 }
 
 void loop() {
-  // reads the input on analog pin A0 (value between 0 and 1023)
+ 
         if (!tb.connected()) {
-  // Connect to the ThingsBoard
+  						//Conexion con Thingsboard
         Serial.print("Connecting to: ");
         Serial.print(THINGSBOARD_SERVER);
         Serial.print(" with token ");
@@ -151,7 +183,7 @@ void loop() {
           }
   }
       else {
-              leer_HTierra1();
+              leer_HTierra1();			//Lectura de sensores
               delay(500);
               leer_HTierra2();
               delay(500);
