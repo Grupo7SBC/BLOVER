@@ -60,8 +60,8 @@
       },
       {
         "additionalInfo": {
-          "layoutX": 825,
-          "layoutY": 379
+          "layoutX": 822,
+          "layoutY": 349
         },
         "type": "org.thingsboard.rule.engine.action.TbLogNode",
         "name": "Log Other",
@@ -110,6 +110,21 @@
         "type": "RPC Request to Device"
       }
     ],
-    "ruleChainConnections": null
+    "ruleChainConnections": [
+      {
+        "fromIndex": 0,
+        "targetRuleChainId": {
+          "entityType": "RULE_CHAIN",
+          "id": "44c25b50-5371-11eb-98ea-21893ad7fbe9"
+        },
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1171,
+          "layoutY": 159,
+          "ruleChainNodeId": "rule-chain-node-8"
+        },
+        "type": "Success"
+      }
+    ]
   }
 }

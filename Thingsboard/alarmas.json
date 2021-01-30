@@ -1,0 +1,481 @@
+{
+  "ruleChain": {
+    "additionalInfo": {
+      "description": ""
+    },
+    "name": "Alarmas",
+    "firstRuleNodeId": null,
+    "root": false,
+    "debugMode": false,
+    "configuration": null
+  },
+  "metadata": {
+    "firstNodeIndex": 19,
+    "nodes": [
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 864,
+          "layoutY": 99
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New telegram message",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n //newMsg.text = msg.temperature;\r\n newMsg.text = \"Humedad baja en la columna 2 \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = 367969017; //has to be replaced by the actual chat id\r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 952,
+          "layoutY": 158
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New telegram message",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n //newMsg.text = msg.temperature;\r\n newMsg.text = \"Humedad baja en las dos columnas \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = 367969017; //has to be replaced by the actual chat id\r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 965,
+          "layoutY": 215
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New telegram message",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n //newMsg.text = msg.temperature;\r\n newMsg.text = \"Deposito de agua al 50% \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = 367969017; //has to be replaced by the actual chat id\r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1013,
+          "layoutY": 267
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New telegram message",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n //newMsg.text = msg.temperature;\r\n newMsg.text = \"Depósito de agua al 75% \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = 367969017; //has to be replaced by the actual chat id\r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1074,
+          "layoutY": 322
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New telegram message",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n //newMsg.text = msg.temperature;\r\n     newMsg.text = \"Deposito de agua al 90% \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = 367969017; //has to be replaced by the actual chat id\r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 818,
+          "layoutY": 48
+        },
+        "type": "org.thingsboard.rule.engine.transform.TbTransformMsgNode",
+        "name": "New telegram message",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": " var newMsg ={};\r\n //newMsg.text = msg.temperature;\r\n newMsg.text = \"Humedad baja en la columna 2 \" + '\"' + metadata.deviceName + '\"';\r\n newMsg.chat_id = 367969017; //has to be replaced by the actual chat id\r\n return {msg: newMsg, metadata: metadata, msgType: msgType};"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 1216,
+          "layoutY": 57
+        },
+        "type": "org.thingsboard.rule.engine.rest.TbRestApiCallNode",
+        "name": "REST API telegram Call",
+        "debugMode": false,
+        "configuration": {
+          "restEndpointUrlPattern": "https://api.telegram.org/bot1661477730:AAHvA5yLM9e6JIH5DFZxujOmC1o1Oi6_aIQ/sendMessage",
+          "requestMethod": "POST",
+          "useSimpleClientHttpFactory": false,
+          "readTimeoutMs": 0,
+          "maxParallelRequestsCount": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "useRedisQueueForMsgPersistence": false,
+          "trimQueue": false,
+          "maxQueueSize": 0
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 496,
+          "layoutY": 514
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Humedad ok",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "alarmType": "Humedad baja en línea 3"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 496,
+          "layoutY": 425
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Humedad ok",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "alarmType": "Humedad baja en línea 2"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 778,
+          "layoutY": 500
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Agua ok",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "alarmType": "Agua al 75%"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 783,
+          "layoutY": 576
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Agua ok",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "alarmType": "Agua al 90%"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 467,
+          "layoutY": 51
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "Humedad 1",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "Humedad baja en línea 1",
+          "severity": "WARNING",
+          "propagate": false,
+          "relationTypes": []
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 592,
+          "layoutY": 116
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "Humedad 2",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "Humedad baja en línea 2",
+          "severity": "WARNING",
+          "propagate": false,
+          "relationTypes": []
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 670,
+          "layoutY": 171
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "Humedad 3",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "Ambas lineas con humedad baja",
+          "severity": "WARNING",
+          "propagate": false,
+          "relationTypes": []
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 719,
+          "layoutY": 224
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "Agua 50",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "Agua al 50%",
+          "severity": "MINOR",
+          "propagate": false,
+          "relationTypes": []
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 842,
+          "layoutY": 324
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "Agua al 90",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "Agua al 90%",
+          "severity": "CRITICAL",
+          "propagate": false,
+          "relationTypes": []
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 770,
+          "layoutY": 273
+        },
+        "type": "org.thingsboard.rule.engine.action.TbCreateAlarmNode",
+        "name": "Agua 75",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "useMessageAlarmData": false,
+          "alarmType": "Agua al 75%",
+          "severity": "MAJOR",
+          "propagate": false,
+          "relationTypes": []
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 492,
+          "layoutY": 336
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Humedad ok",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "alarmType": "Humedad baja en línea 1"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 773,
+          "layoutY": 423
+        },
+        "type": "org.thingsboard.rule.engine.action.TbClearAlarmNode",
+        "name": "Agua ok",
+        "debugMode": false,
+        "configuration": {
+          "alarmDetailsBuildJs": "var details = {};\nif (metadata.prevAlarmDetails) {\n    details = JSON.parse(metadata.prevAlarmDetails);\n}\nreturn details;",
+          "alarmType": "Agua al 50%"
+        }
+      },
+      {
+        "additionalInfo": {
+          "description": "",
+          "layoutX": 300,
+          "layoutY": 218
+        },
+        "type": "org.thingsboard.rule.engine.filter.TbJsSwitchNode",
+        "name": "Humedad",
+        "debugMode": false,
+        "configuration": {
+          "jsScript": "if(msg.Nivel_agua > 90)\n    return ['90']\nif(msg.Nivel_agua > 75)\n    return ['75']\nif(msg.Nivel_agua > 50)\n    return ['50']\n\nif((msg.Humedad_tierra_1 < 30 || msg.Humedad_tierra_2 < 30 || msg.Humedad_tierra_3 < 30) && msg.Humedad_tierra_4 < 30 || msg.Humedad_tierra_5 < 30 || msg.Humedad_tierra_6 < 30)\n    return ['Linea 3']\n\nif(msg.Humedad_tierra_1 < 30 || msg.Humedad_tierra_2 < 30 || msg.Humedad_tierra_3 < 30)\n    return ['Linea 1']\nif(msg.Humedad_tierra_4 < 30 || msg.Humedad_tierra_5 < 30 || msg.Humedad_tierra_6 < 30)\n    return ['Linea 2']\n\n\nreturn ['OK'];"
+        }
+      }
+    ],
+    "connections": [
+      {
+        "fromIndex": 0,
+        "toIndex": 6,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 1,
+        "toIndex": 6,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 2,
+        "toIndex": 6,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 3,
+        "toIndex": 6,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 4,
+        "toIndex": 6,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 5,
+        "toIndex": 6,
+        "type": "Success"
+      },
+      {
+        "fromIndex": 7,
+        "toIndex": 18,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 7,
+        "toIndex": 18,
+        "type": "False"
+      },
+      {
+        "fromIndex": 8,
+        "toIndex": 7,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 8,
+        "toIndex": 7,
+        "type": "False"
+      },
+      {
+        "fromIndex": 8,
+        "toIndex": 7,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 9,
+        "toIndex": 10,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 9,
+        "toIndex": 10,
+        "type": "False"
+      },
+      {
+        "fromIndex": 11,
+        "toIndex": 5,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 12,
+        "toIndex": 0,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 13,
+        "toIndex": 1,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 14,
+        "toIndex": 2,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 15,
+        "toIndex": 4,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 16,
+        "toIndex": 3,
+        "type": "Created"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 8,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 8,
+        "type": "False"
+      },
+      {
+        "fromIndex": 17,
+        "toIndex": 8,
+        "type": "Failure"
+      },
+      {
+        "fromIndex": 18,
+        "toIndex": 9,
+        "type": "Cleared"
+      },
+      {
+        "fromIndex": 18,
+        "toIndex": 9,
+        "type": "False"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 14,
+        "type": "50"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 16,
+        "type": "75"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 15,
+        "type": "90"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 11,
+        "type": "Linea 1"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 12,
+        "type": "Linea 2"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 13,
+        "type": "Linea 3"
+      },
+      {
+        "fromIndex": 19,
+        "toIndex": 17,
+        "type": "OK"
+      }
+    ],
+    "ruleChainConnections": null
+  }
+}
